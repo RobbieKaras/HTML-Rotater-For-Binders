@@ -9,7 +9,8 @@ const leadingEl = document.getElementById("leading");
 
 // PDF.js worker (required)
 pdfjsLib.GlobalWorkerOptions.workerSrc =
-  "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.js";
+  "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/legacy/build/pdf.worker.min.js";
+
 
 fileInput.addEventListener("change", () => {
   runBtn.disabled = !fileInput.files?.length;
