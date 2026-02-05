@@ -3,124 +3,102 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PDF → Sideways Text PDF</title>
+  <title>HTML → Sideways Binder PDF</title>
 
   <style>
-    :root { color-scheme: light; }
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       margin: 24px;
       line-height: 1.4;
-      background: #ffffff;
       color: #111;
     }
     .card {
       max-width: 980px;
       border: 1px solid #ddd;
       border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+      padding: 18px;
     }
-    h1 { margin: 0 0 6px 0; font-size: 28px; }
-    p { margin: 10px 0; font-size: 18px; }
+    h1 { margin: 0 0 8px 0; font-size: 22px; }
+    p { margin: 10px 0; }
     .row {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
       align-items: center;
-      margin: 14px 0;
+      margin: 12px 0;
     }
-    label { font-size: 18px; }
-    input[type="file"] { font-size: 16px; }
-    select, button {
-      font-size: 16px;
+    input[type="file"] { font-size: 14px; }
+    button, select {
+      font-size: 14px;
       padding: 8px 12px;
       border: 1px solid #bbb;
-      border-radius: 8px;
+      border-radius: 10px;
       background: #fff;
     }
-    button {
-      cursor: pointer;
-      border-color: #999;
-      background: #f5f5f5;
-    }
-    button:disabled {
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-    .tip {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 16px;
-      margin-top: 8px;
+    button { cursor: pointer; background: #f6f6f6; }
+    button:disabled { cursor: not-allowed; opacity: 0.6; }
+    iframe {
+      width: 100%;
+      height: 70vh;
+      border: 1px solid #ccc;
+      border-radius: 12px;
     }
     .status {
       white-space: pre-wrap;
       background: #f7f7f7;
       border: 1px solid #e5e5e5;
       border-radius: 12px;
-      padding: 14px;
-      margin-top: 14px;
+      padding: 12px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 15px;
+      font-size: 13px;
+      margin-top: 10px;
     }
-    .small { font-size: 14px; color: #333; }
+    .tip {
+      font-size: 13px;
+      color: #333;
+    }
   </style>
 
-  <!-- PDF.js (stable legacy build that exposes global `pdfjsLib`) -->
-  <script defer src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
-
-  <!-- pdf-lib (PDF generation) -->
-  <script defer src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-
-  <!-- Your logic -->
   <script defer src="./script.js"></script>
 </head>
 
 <body>
   <div class="card">
-    <h1>PDF → Sideways Text PDF (Binder-friendly)</h1>
+    <h1>HTML → Sideways Binder PDF</h1>
     <p>
-      Upload a PDF. This extracts the text and creates a new PDF where the text is rotated 90°
-      so you can print it and use it in a top-opening binder.
+      Save your lecture page as an <b>.html</b> file, upload it here, then click <b>Print Sideways</b>.
+      In the print dialog, turn <b>Headers and footers</b> OFF and choose <b>Save as PDF</b>.
     </p>
 
     <div class="row">
-      <input id="file" type="file" accept="application/pdf" />
-      <button id="run" disabled>Make Sideways PDF</button>
-    </div>
+      <input id="file" type="file" accept=".html,text/html" />
+      <button id="printBtn" disabled>Print Sideways</button>
 
-    <div class="row">
       <label for="direction">Direction:</label>
       <select id="direction">
-        <option value="ccw" selected>90° counterclockwise (recommended)</option>
-        <option value="cw">90° clockwise</option>
+        <option value="ccw" selected>Binder (vertical-rl)</option>
+        <option value="cw">Opposite direction</option>
       </select>
 
-      <label for="fontsize">Font size:</label>
+      <label for="fontsize">Font:</label>
       <select id="fontsize">
-        <option>9</option>
-        <option selected>10</option>
-        <option>11</option>
-        <option>12</option>
-      </select>
-
-      <label for="leading">Line spacing:</label>
-      <select id="leading">
-        <option>11</option>
+        <option>10</option>
         <option selected>12</option>
-        <option>13</option>
         <option>14</option>
+        <option>16</option>
       </select>
     </div>
 
     <div class="tip">
-      Tip: If your output has weird spacing, try font size 9 or increase line spacing.
-    </div>
-    <div class="small">
-      If the button stays gray after selecting a PDF, open DevTools (F12) → Console and look for red errors.
+      If content splits weirdly, try a smaller font. To remove the ugly timestamp/about:blank lines,
+      make sure <b>Headers and footers</b> is OFF in the print dialog.
     </div>
 
-    <div class="status" id="status">Choose a PDF to start.</div>
+    <div class="status" id="status">Choose an HTML file to start.</div>
+
+    <div class="row" style="margin-top:14px;">
+      <iframe id="preview" sandbox="allow-same-origin"></iframe>
+    </div>
   </div>
 </body>
 </html>
